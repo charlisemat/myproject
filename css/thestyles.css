@@ -1,0 +1,71 @@
+.common{
+    text-align:center;
+    font-family:'Times New Roman', Times, serif;
+    font-size: larger;
+}
+
+#heading{
+    color:aliceblue;   
+    font-size: 50px;
+}
+#advice{
+    text-align: left;
+}
+
+.header{
+    background-color:#0072CE ;
+    color: white;
+    height: 200px;
+    line-height: 100px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 17px;
+}
+header.masthead {
+    position: relative;
+    padding-top: calc(6rem + 57px);
+    padding-bottom: 12rem;
+    background: no-repeat center center;
+    background-color: #6c757d;
+    background-size: cover;
+    background-attachment: scroll;
+}
+
+.mainbody{
+    background-color:aliceblue;
+}
+.centered-list{
+        padding-left: 5;
+        list-style-position: outside;
+        margin: 0 auto;
+        text-align: left;
+}
+.footer{
+    position: fixed;
+    background-color: black;
+    color: white;
+    bottom: 0px;
+    left: 5px;
+    right: 5px;
+    height: 25px;
+    line-height: 25px;
+}
+nav{
+    background-color: lightgray;
+    padding: 10px;
+    overflow: hidden;
+}
+
+nav a{
+    color:#333;
+    text-decoration: none;
+    padding: 15px;
+    font-weight: bold;
+}
+
+nav a:hover{
+    background-color: #ccc;
+}
+a{
+    color: white;
+    overflow: hidden;
+}

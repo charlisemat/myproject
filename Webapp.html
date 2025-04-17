@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BYU vs. UTAH Snake Game</title>
+  <style>
+    body {
+      background-color: #f5f5f5;
+      text-align: center;
+      font-family: Arial, sans-serif;
+    }
+
+    h1 {
+      margin-top: 20px;
+      color: #0072CE;
+    }
+
+    canvas {
+      border: 2px solid #333;
+      background-color: #fff;
+      display: block;
+      margin: 20px auto;
+    }
+
+    #score {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    #restartBtn {
+      display: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #0072CE;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #restartBtn:hover {
+      background-color: #005fa3;
+    }
+  </style>
+</head>
+<body>
+  <h1>BYU vs. UTAH Snake Game</h1>
+  <div id="score">Score: 0</div>
+  <canvas id="game" width="400" height="400"></canvas>
+  <button id="restartBtn">Restart Game</button>
+
+  <script>
+    const canvas = document.getElementById('game');
+    const ctx = canvas.getContext('2d');
+    const scale = 20;
+    const rows = canvas.height / scale;
+    const cols = canvas.width / scale;
+
+    const restartBtn = document.getElementById("restartBtn");
+    const scoreDisplay = document.getElementById("score");
+
+    const byuLogo = new Image();
+    byuLogo.src = 'assets/img/BYU_Cougars_logo.svg.png';
+
+    const utahLogo = new Image();
+    utahLogo.src = 'assets/img/Utah_Utes_logo.svg.png';
+
+    let snake;
+    let fruit;
+    let direction;
+    let game;
+    let score = 0;
+
+    function initGame() {
+      snake = [{ x: 200, y: 200 }];
+      direction = { x: scale, y: 0 };
+      score = 0;
+      placeFruit();
+      restartBtn.style.display = "none";
+      scoreDisplay.textContent = "Score: 0";
+
+      if (game) clearInterval(game);
+      game = setInterval(updateGame, 150);
+    }
+
+    function placeFruit() {
+      fruit = {
+        x: Math.floor(Math.random() * cols) * scale,
+        y: Math.floor(Math.random() * rows) * scale
+      };
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw fruit (Utah logo)
+      ctx.drawImage(utahLogo, fruit.x, fruit.y, scale, scale);
+
+      // Draw snake
+      for (let i = 0; i < snake.length; i++) {
+        if (i === 0) {
+          ctx.drawImage(byuLogo, snake[i].x, snake[i].y, scale, scale); // Head
+        } else {
+          ctx.fillStyle = '#0072CE'; // BYU Blue
+          ctx.fillRect(snake[i].x, snake[i].y, scale, scale);
+        }
+      }
+    }
+
+    function updateGame() {
+      const head = {
+        x: snake[0].x + direction.x,
+        y: snake[0].y + direction.y
+      };
+
+      // Collision detection
+      if (
+        head.x < 0 || head.x >= canvas.width ||
+        head.y < 0 || head.y >= canvas.height ||
+        snake.some(segment => segment.x === head.x && segment.y === head.y)
+      ) {
+        endGame();
+        return;
+      }
+
+      snake.unshift(head);
+
+      if (head.x === fruit.x && head.y === fruit.y) {
+        score++;
+        scoreDisplay.textContent = `Score: ${score}`;
+        placeFruit();
+      } else {
+        snake.pop();
+      }
+
+      draw();
+    }
+
+    function endGame() {
+      clearInterval(game);
+      restartBtn.style.display = "inline-block";
+    }
+
+    window.addEventListener('keydown', e => {
+      switch (e.key) {
+        case 'ArrowUp':
+          if (direction.y === 0) direction = { x: 0, y: -scale };
+          break;
+        case 'ArrowDown':
+          if (direction.y === 0) direction = { x: 0, y: scale };
+          break;
+        case 'ArrowLeft':
+          if (direction.x === 0) direction = { x: -scale, y: 0 };
+          break;
+        case 'ArrowRight':
+          if (direction.x === 0) direction = { x: scale, y: 0 };
+          break;
+      }
+    });
+
+    restartBtn.addEventListener('click', initGame);
+
+    initGame();
+  </script>
+</body>
+</html>
